@@ -96,13 +96,13 @@ func Upload(tx *sql.Tx, fileType string, tmpPath string, uploadData map[string]m
 
 	if len(fileType) == 0 {
 		return nil, &web.ValidationError{
-			Errors: map[string]string{"error": "no_type"},
+			Fields: map[string]string{"error": "no_type"},
 		}
 	}
 
 	if _, ok := uploadData[fileType]; !ok {
 		return nil, &web.ValidationError{
-			Errors: map[string]string{"error": "wrong_type"},
+			Fields: map[string]string{"error": "wrong_type"},
 		}
 	}
 
@@ -113,7 +113,7 @@ func Upload(tx *sql.Tx, fileType string, tmpPath string, uploadData map[string]m
 
 	if r.ContentLength > int64(MaxFileSize) {
 		return nil, &web.ValidationError{
-			Errors: map[string]string{"error": "file_too_large_cl"},
+			Fields: map[string]string{"error": "file_too_large_cl"},
 		}
 	}
 
@@ -121,7 +121,7 @@ func Upload(tx *sql.Tx, fileType string, tmpPath string, uploadData map[string]m
 	err := r.ParseMultipartForm(10000000)
 	if err != nil {
 		return nil, &web.ValidationError{
-			Errors: map[string]string{"error": "file_too_large"},
+			Fields: map[string]string{"error": "file_too_large"},
 		}
 	}
 
@@ -132,7 +132,7 @@ func Upload(tx *sql.Tx, fileType string, tmpPath string, uploadData map[string]m
 
 	if err != nil {
 		return nil, &web.ValidationError{
-			Errors: map[string]string{"error": "file_not_provided"},
+			Fields: map[string]string{"error": "file_not_provided"},
 		}
 	}
 
@@ -144,7 +144,7 @@ func Upload(tx *sql.Tx, fileType string, tmpPath string, uploadData map[string]m
 
 	if !slice.StringInSlice(f.Mime, mime) {
 		return nil, &web.ValidationError{
-			Errors: map[string]string{"error": "mime_type_not_allowed"},
+			Fields: map[string]string{"error": "mime_type_not_allowed"},
 		}
 	}
 
