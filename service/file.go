@@ -174,7 +174,6 @@ func Upload(tx *sql.Tx, fileType string, tmpPath string, uploadData map[string]m
 
 func GetFromS3(AWSS3Region string, AWSS3Bucket string, filePath string) (io.ReadCloser, error) {
 	body, err := s3.Get(AWSS3Region, AWSS3Bucket, filePath)
-	defer body.Close()
 	return body, err
 }
 
