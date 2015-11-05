@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"time"
 
-	"bitbucket.org/pqstudio/go-file/model"
+	"github.com/gregory90/go-file/model"
 )
 
 const (

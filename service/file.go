@@ -7,15 +7,15 @@ import (
 	"os"
 	"time"
 
-	"bitbucket.org/pqstudio/go-file/datastore"
-	"bitbucket.org/pqstudio/go-file/model"
+	"github.com/gregory90/go-file/datastore"
+	"github.com/gregory90/go-file/model"
 
-	"bitbucket.org/pqstudio/go-webutils/slice"
+	"github.com/gregory90/go-webutils/slice"
 
-	"bitbucket.org/pqstudio/go-webutils/web"
+	"github.com/gregory90/go-webutils/web"
 
-	"bitbucket.org/pqstudio/go-webutils"
-	s3 "bitbucket.org/pqstudio/go-webutils/s3"
+	"github.com/gregory90/go-webutils"
+	s3 "github.com/gregory90/go-webutils/s3"
 )
 
 func Get(tx *sql.Tx, uid string) (*model.File, error) {
