@@ -16,6 +16,8 @@ import (
 
 	"github.com/gregory90/go-webutils"
 	s3 "github.com/gregory90/go-webutils/s3"
+
+	. "github.com/gregory90/go-webutils/logger"
 )
 
 func Get(tx *sql.Tx, uid string) (*model.File, error) {
@@ -166,7 +168,7 @@ func Upload(tx *sql.Tx, fileType string, tmpPath string, uploadData map[string]m
 
 	err = DeleteOlderThan(tx, 5)
 	if err != nil {
-		return nil, err
+		Log.Debug("%+v", err)
 	}
 
 	return f, nil
