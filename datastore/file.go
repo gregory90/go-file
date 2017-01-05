@@ -11,14 +11,15 @@ const (
 	table string = "files"
 
 	selectQuery string = `
-        SELECT 
-            lower(hex(uid)), 
-            name, 
-            mime, 
-            uniqueID, 
-            fileType, 
-            tmp, 
-            createdAt 
+        SELECT
+            lower(hex(uid)),
+            name,
+            externalName,
+            mime,
+            uniqueID,
+            fileType,
+            tmp,
+            createdAt
         FROM ` + table + " "
 
 	deleteQuery string = `
@@ -29,6 +30,7 @@ func scanSelect(m *model.File, rows *sql.Rows) error {
 	err := rows.Scan(
 		&m.UID,
 		&m.Name,
+		&m.ExternalName,
 		&m.Mime,
 		&m.UniqueID,
 		&m.Type,
@@ -60,7 +62,7 @@ func getAll(rows *sql.Rows) ([]model.File, error) {
 
 func Get(tx *sql.Tx, uid string) (*model.File, error) {
 	m := &model.File{}
-	err := tx.QueryRow(selectQuery+"WHERE uid = unhex(?)", uid).Scan(&m.UID, &m.Name, &m.Mime, &m.UniqueID, &m.Type, &m.Tmp, &m.CreatedAt)
+	err := tx.QueryRow(selectQuery+"WHERE uid = unhex(?)", uid).Scan(&m.UID, &m.Name, &m.ExternalName, &m.Mime, &m.UniqueID, &m.Type, &m.Tmp, &m.CreatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -83,24 +85,24 @@ func GetOlderThan(tx *sql.Tx, t int) ([]model.File, error) {
 }
 
 func Create(tx *sql.Tx, m *model.File) error {
-	stmt, err := tx.Prepare("INSERT " + table + " SET uid=unhex(?),name=?,mime=?,uniqueID=?,fileType=?,tmp=?,createdAt=?")
+	stmt, err := tx.Prepare("INSERT " + table + " SET uid=unhex(?),name=?,externalName=?,mime=?,uniqueID=?,fileType=?,tmp=?,createdAt=?")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(m.UID, m.Name, m.Mime, m.UniqueID, m.Type, m.Tmp, m.CreatedAt)
+	_, err = stmt.Exec(m.UID, m.Name, m.ExternalName, m.Mime, m.UniqueID, m.Type, m.Tmp, m.CreatedAt)
 	return err
 }
 
 func Update(tx *sql.Tx, m *model.File) error {
-	stmt, err := tx.Prepare("UPDATE " + table + " SET name=?,tmp=? WHERE uid=unhex(?)")
+	stmt, err := tx.Prepare("UPDATE " + table + " SET name=?,externalName=?,tmp=? WHERE uid=unhex(?)")
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(m.Name, m.Tmp, m.UID)
+	_, err = stmt.Exec(m.Name, m.ExternalName, m.Tmp, m.UID)
 	return err
 }
 

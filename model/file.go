@@ -5,13 +5,14 @@ import (
 )
 
 type File struct {
-	UID       string    `json:"uid,omitempty"`
-	Name      string    `json:"name,omitempty"`
-	Mime      string    `json:"mime,omitempty"`
-	UniqueID  string    `json:"uniqueID,omitempty"`
-	Type      string    `json:"type,omitempty"`
-	Tmp       bool      `json:"tmp,omitempty"`
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UID          string    `json:"uid,omitempty"`
+	Name         string    `json:"name,omitempty"`
+	ExternalName string    `json:"externalName,omitempty"`
+	Mime         string    `json:"mime,omitempty"`
+	UniqueID     string    `json:"uniqueID,omitempty"`
+	Type         string    `json:"type,omitempty"`
+	Tmp          bool      `json:"tmp,omitempty"`
+	CreatedAt    time.Time `json:"createdAt,omitempty"`
 }
 
 func (m File) Validate() map[string]interface{} {
